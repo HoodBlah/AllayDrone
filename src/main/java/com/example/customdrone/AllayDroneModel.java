@@ -59,7 +59,7 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float flap = (float) Math.sin(ageInTicks * 2.0F) * 0.3F;
+        float flap = (float) Math.sin(ageInTicks * 0.8F) * 0.25F;
         this.left_wing.yRot = flap;
         this.right_wing.yRot = -flap;
     }
