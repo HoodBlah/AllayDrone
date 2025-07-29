@@ -1,0 +1,35 @@
+# Forge 47 for 1.20.1
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="customdrone"
+version="1.0.0"
+displayName="Custom Drone Addon"
+logoFile="logo.png"
+authors="YourName"
+
+description='''
+Replaces PneumaticCraft drone model & texture with a custom one.
+'''
+
+[[dependencies.customdrone]]
+modId="forge"
+mandatory=true
+# any Forge 47.x
+versionRange="[47.0.0,)"
+side="CLIENT"
+
+[[dependencies.customdrone]]
+modId="minecraft"
+mandatory=true
+# Minecraft 1.20.1
+versionRange="[1.20.1,)"
+side="CLIENT"
+
+[[dependencies.customdrone]]
+modId="pneumaticcraft"
+mandatory=true
+versionRange="[6.0.0,)"
+side="CLIENT" 
