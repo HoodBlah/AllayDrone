@@ -1,9 +1,12 @@
 package com.example.customdrone;
 
 import me.desht.pneumaticcraft.common.entity.drone.DroneEntity;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.resources.ResourceLocation;
+import com.example.customdrone.DroneHeldItemLayer;
 
 public class CustomDroneRenderer extends MobRenderer<DroneEntity, AllayDroneModel<DroneEntity>> {
 
@@ -13,8 +16,8 @@ public class CustomDroneRenderer extends MobRenderer<DroneEntity, AllayDroneMode
 
     public CustomDroneRenderer(EntityRendererProvider.Context context) {
         super(context, new AllayDroneModel<>(context.bakeLayer(AllayDroneModel.LAYER_LOCATION)), 0.3f);
-        // Render held/carrying item
-        this.addLayer(new net.minecraft.client.renderer.entity.layers.ItemInHandLayer<DroneEntity, AllayDroneModel<DroneEntity>>(this, context.getItemInHandRenderer()));
+        // Render held/carrying item using built-in layer
+        this.addLayer(new DroneHeldItemLayer(this, context.getItemInHandRenderer()));
     }
 
     @Override

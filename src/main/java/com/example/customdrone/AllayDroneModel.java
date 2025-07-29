@@ -28,6 +28,10 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> implements
     private final ModelPart left_wing;
     private final ModelPart right_wing;
 
+    public ModelPart getRightArm() {
+        return right_arm;
+    }
+
     public AllayDroneModel(ModelPart root) {
         this.head = root.getChild("head");
         this.head4 = this.head.getChild("head4");
@@ -53,19 +57,25 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> implements
         partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(23, 6).addBox(-0.25F, -0.5F, -1.0F, 1.0F, 4.0F, 2.0F), PartPose.offset(1.75F, 18.5F, 0.0F));
 
         partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F),
-                PartPose.offsetAndRotation(1.0F, 18.0F, 1.0F, 0.0F, (float) Math.toRadians(45), 0.0F));
+                PartPose.offsetAndRotation(0.4F, 18.0F, 0.8F, 0.0F, (float) Math.toRadians(45), 0.0F));
 
         partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F),
-                PartPose.offsetAndRotation(-1.0F, 18.0F, 1.0F, 0.0F, (float) Math.toRadians(-45), 0.0F));
+                PartPose.offsetAndRotation(-0.4F, 18.0F, 0.8F, 0.0F, (float) Math.toRadians(-45), 0.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float flap = (float) Math.sin(ageInTicks * 0.4F) * 0.4F; // slow forward/back sweep
+
+        float flap = (float) Math.sin(ageInTicks * 0.35F) * 0.25F;
         this.left_wing.xRot = flap;
         this.right_wing.xRot = flap;
+
+        // Idle arm swing
+        float armSwing = (float) Math.sin(ageInTicks * 0.2F) * 0.1F;
+        this.left_arm.zRot = armSwing;
+        this.right_arm.zRot = -armSwing;
     }
 
     @Override
@@ -82,5 +92,8 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> implements
     public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
         ModelPart part = arm == HumanoidArm.LEFT ? this.left_arm : this.right_arm;
         part.translateAndRotate(poseStack);
+        // move item slightly forward & enlarge for visibility
+        poseStack.translate(0.0F, -0.05F, 0.15F);
+        poseStack.scale(3.0F, 3.0F, 3.0F);
     }
 } 
