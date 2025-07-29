@@ -50,18 +50,20 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> {
 
         partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(23, 6).addBox(-0.25F, -0.5F, -1.0F, 1.0F, 4.0F, 2.0F), PartPose.offset(1.75F, 18.5F, 0.0F));
 
-        partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F), PartPose.offset(0.5F, 18.0F, 1.0F));
+        partdefinition.addOrReplaceChild("left_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F),
+                PartPose.offsetAndRotation(1.0F, 18.0F, 1.0F, 0.0F, (float) Math.toRadians(45), 0.0F));
 
-        partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F), PartPose.offset(-0.5F, 18.0F, 1.0F));
+        partdefinition.addOrReplaceChild("right_wing", CubeListBuilder.create().texOffs(16, 14).addBox(0.0F, 1.0F, 0.0F, 0.0F, 5.0F, 8.0F),
+                PartPose.offsetAndRotation(-1.0F, 18.0F, 1.0F, 0.0F, (float) Math.toRadians(-45), 0.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float flap = (float) Math.sin(ageInTicks * 0.8F) * 0.25F;
-        this.left_wing.yRot = flap;
-        this.right_wing.yRot = -flap;
+        float flap = (float) Math.sin(ageInTicks * 0.5F) * 0.35F; // slower, larger sweep
+        this.left_wing.zRot = flap;
+        this.right_wing.zRot = -flap;
     }
 
     @Override
