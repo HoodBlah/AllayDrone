@@ -19,7 +19,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(CustomDroneModel.LAYER_LOCATION, CustomDroneModel::createBodyLayer);
+        event.registerLayerDefinition(AllayDroneModel.LAYER_LOCATION, AllayDroneModel::createBodyLayer);
     }
 
     @SubscribeEvent
