@@ -3,6 +3,7 @@ package com.example.customdrone;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,8 +14,9 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
 
-public class AllayDroneModel<T extends Entity> extends EntityModel<T> {
+public class AllayDroneModel<T extends Entity> extends EntityModel<T> implements ArmedModel {
     // Layer location baked with EntityRendererProvider.Context
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(CustomDroneMod.MODID, "allay_drone"), "main");
 
@@ -61,9 +63,9 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> {
 
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        float flap = (float) Math.sin(ageInTicks * 0.5F) * 0.35F; // slower, larger sweep
-        this.left_wing.zRot = flap;
-        this.right_wing.zRot = -flap;
+        float flap = (float) Math.sin(ageInTicks * 0.4F) * 0.4F; // slow forward/back sweep
+        this.left_wing.xRot = flap;
+        this.right_wing.xRot = flap;
     }
 
     @Override
@@ -74,5 +76,11 @@ public class AllayDroneModel<T extends Entity> extends EntityModel<T> {
         left_arm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         left_wing.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         right_wing.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
+    public void translateToHand(HumanoidArm arm, PoseStack poseStack) {
+        ModelPart part = arm == HumanoidArm.LEFT ? this.left_arm : this.right_arm;
+        part.translateAndRotate(poseStack);
     }
 } 

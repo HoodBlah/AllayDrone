@@ -13,6 +13,8 @@ public class CustomDroneRenderer extends MobRenderer<DroneEntity, AllayDroneMode
 
     public CustomDroneRenderer(EntityRendererProvider.Context context) {
         super(context, new AllayDroneModel<>(context.bakeLayer(AllayDroneModel.LAYER_LOCATION)), 0.3f);
+        // Render held/carrying item
+        this.addLayer(new net.minecraft.client.renderer.entity.layers.ItemInHandLayer<DroneEntity, AllayDroneModel<DroneEntity>>(this, context.getItemInHandRenderer()));
     }
 
     @Override
@@ -32,7 +34,11 @@ public class CustomDroneRenderer extends MobRenderer<DroneEntity, AllayDroneMode
         float smoothYaw = net.minecraft.util.Mth.rotLerp(0.15F, previous, desiredYaw);
         LAST_YAW.put(entity.getId(), smoothYaw);
 
-        poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(180.0F - smoothYaw));
+        poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(195.0F - smoothYaw));
+
+        // gentle vertical bob like Allay
+        float bob = (float) Math.sin((entity.tickCount + partialTicks) * 0.2F) * 0.05F;
+        poseStack.translate(0.0D, bob, 0.0D);
 
         // Pitch a little when ascending / descending (optional subtle effect)
         double horizMag = Math.sqrt(delta.x * delta.x + delta.z * delta.z);
